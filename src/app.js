@@ -10,6 +10,7 @@ var app = express();
 
 app.use('/static', express.static(__dirname + '/public'))
 
+app.set('port', (process.env.PORT || 3000));
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/templates');
 
@@ -38,6 +39,6 @@ app.get('/posts', function(req, res) {
 	}
 })
 
-app.listen(3000, function() {
-	console.log("The frontend server is running on port 3000!");
+app.listen(app.get('port'), function() {
+	console.log("The frontend server is running on port " + app.get('port') + "!");
 });
