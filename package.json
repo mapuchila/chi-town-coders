@@ -1,27 +1,29 @@
 {
-  "name": "express-basics",
+  "name": "chi-town-coders",
   "version": "1.0.0",
-  "description": "This repo features an express app to serve as demo in the Express Basics course on Treehouse.",
+  "description": "This is going to be the future site for Supreme Chi-Town Coding Crew organization.",
   "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mufniarz/basic-express-blog.git"
+    "url": "https://github.com/sc3/chi-town-coders.git"
   },
   "keywords": [
     "node",
     "express",
     "blog",
-    "website"
+    "website",
+    "heroku",
+    "jade"
   ],
   "author": "Marcin Ufniarz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mufniarz/basic-express-blog/issues"
+    "url": "https://github.com/sc3/chi-town-coders/issues"
   },
-  "homepage": "https://github.com/mufniarz/basic-express-blog#readme",
+  "homepage": "https://github.com/sc3/chi-town-coders#readme",
   "dependencies": {
     "express": "^4.13.4",
     "jade": "^1.11.0"
