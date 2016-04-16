@@ -1,30 +1,6 @@
-#Express Basics Demo Site
+#Supreme Chi-Town Coding Crew
 
-This repo features an express app to serve as demo in the Express Basics course on Treehouse.
-
-## How to use this repo
-To follow along with the Treehouse course, checkout the branch with the associated video.  The video for a given stage will indicate which branch to checkout.
-
-**To start with the very first video:**
-```
-git clone <this-repo>
-cd <this-repo>
-# you should already be on the master branch, but just in case
-git checkout master
-```
-
-**To begin with progress up until a certain video, for example "S2V2":**
-```
-# from this repo
-git checkout S2V2
-```
-These instructions are outlined in individual videos. 
-
-**To view the final app:**
-```
-# from this repo
-git checkout final
-```
+This will be the basic framework for our new site.  Please feel free to contribute as you may see fit.
 
 ## Set Up
 ```
@@ -57,4 +33,4 @@ nodemon --debug src
 node-inspector
 ```
 # Finished Product Link
-https://mmu-blog.herokuapp.com/
+https://sc3.github.io
