@@ -33,4 +33,4 @@ nodemon --debug src
 node-inspector
 ```
 # Finished Product Link
-https://sc3.github.io
+https://chi-town-coders.herokuapp.com/
