@@ -108,4 +108,144 @@ AccountController.prototype.logoff = function () {
 
 };
 
+AccountController.prototype.register = function (newUser, callback) {
+
+    var me = this;
+
+    me.userModel.findOne({ email: newUser.email }, function (err, user) {
+
+        if (err) {
+
+            return callback(err, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.DB_ERROR } }));
+
+        }
+
+        if (user) {
+
+            return callback(err, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.EMAIL_ALREADY_EXISTS } }));
+
+        } else {
+
+            newUser.save(function (err, user, numberAffected) {
+
+                if (err) {
+
+                    return callback(err, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.DB_ERROR } }));
+
+                }
+
+                if (numberAffected === 1) {
+
+                    var userProfileModel = new me.UserProfileModel({
+
+                        email: user.email,
+
+                        firstName: user.firstName,
+
+                        lastName: user.lastName
+
+                    });
+
+                    return callback(err, new me.ApiResponse({
+
+                        success: true, extras: {
+
+                            userProfileModel: userProfileModel
+
+                        }
+
+                    }));
+
+                } else {
+
+                    return callback(err, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.COULD_NOT_CREATE_USER } }));
+
+                }             
+
+            });
+
+        }
+
+    });
+
+};
+
+AccountController.prototype.resetPassword = function (email, callback) {
+
+    var me = this;
+
+    me.userModel.findOne({ email: email }, function (err, user) {
+
+        if (err) {
+
+            return callback(err, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.DB_ERROR } }));
+
+        }
+
+        // Save the user's email and a password reset hash in session. We will use
+
+        var passwordResetHash = me.uuid.v4();
+
+        me.session.passwordResetHash = passwordResetHash;
+
+        me.session.emailWhoRequestedPasswordReset = email;
+
+        me.mailer.sendPasswordResetHash(email, passwordResetHash);
+
+        return callback(err, new me.ApiResponse({ success: true, extras: { passwordResetHash: passwordResetHash } }));
+
+    })
+
+};
+
+AccountController.prototype.resetPasswordFinal = function (email, newPassword, passwordResetHash, callback) {
+
+    var me = this;
+    // Checks to see if the reset password hash is saved in session.
+    if (!me.session || !me.session.passwordResetHash) {
+        // If the passwordResetHash is not saved in session or session does not exist returns call expired session error.
+        return callback(null, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.PASSWORD_RESET_EXPIRED } }));
+
+    }
+
+    if (me.session.passwordResetHash !== passwordResetHash) {
+
+        return callback(null, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.PASSWORD_RESET_HASH_MISMATCH } }));
+
+    }
+
+    if (me.session.emailWhoRequestedPasswordReset !== email) {
+
+        return callback(null, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.PASSWORD_RESET_EMAIL_MISMATCH } }));
+
+    }
+
+    var passwordSalt = this.uuid.v4();
+
+    me.hashPassword(newPassword, passwordSalt, function (err, passwordHash) {
+
+        me.userModel.update({ email: email }, { passwordHash: passwordHash, passwordSalt: passwordSalt }, function (err, numberAffected, raw) {
+
+            if (err) {
+
+                return callback(err, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.DB_ERROR } }));
+
+            }
+
+            if (numberAffected < 1) {
+
+                return callback(err, new me.ApiResponse({ success: false, extras: { msg: me.ApiMessages.COULD_NOT_RESET_PASSWORD } }));
+
+            } else {
+
+                return callback(err, new me.ApiResponse({ success: true, extras: null }));
+
+            }                
+
+        });
+
+    });
+
+};
+
 module.exports = AccountController;

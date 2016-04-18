@@ -17,7 +17,7 @@ nav#mainNav.navbar.navbar-default.navbar-fixed-top
 							ul.nav.navbar-nav.navbar-right
 								li
 										a(href='/blog') Blog
-								if path === '/'
+								if path === '/' ||  path === '/sign-in' ||  path === '/sign-up'
 									li
 											a.page-scroll(href='#about') About
 									li
@@ -28,5 +28,9 @@ nav#mainNav.navbar.navbar-default.navbar-fixed-top
 									|                     
 									li
 											a.page-scroll(href='#contact') Contact
+									li
+											a.page-scroll(href='/sign-up') Sign-Up
+									li
+											a.page-scroll(href='/sign-in') Sign-In
 									// /.navbar-collapse
 									// /.container-fluid

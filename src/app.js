@@ -39,7 +39,21 @@ app.get('/posts', function(req, res) {
 	} else {
 		res.json(postsLists);
 	}
-})
+});
+
+app.get('/sign-up', function(req, res){
+	var path = req.path;
+	res.locals.path = path;
+	//console.log(path);
+	res.render('users/sign-up');
+});
+
+app.get('/sign-in', function(req, res){
+	var path = req.path;
+	res.locals.path = path;
+	//console.log(path);
+	res.render('users/sign-in');
+});
 
 app.listen(app.get('port'), function() {
 	console.log("The frontend server is running on port " + app.get('port') + "!");

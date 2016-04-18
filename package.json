@@ -4,7 +4,8 @@
   "description": "This is going to be the future site for Supreme Chi-Town Coding Crew organization.",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,9 @@
     "blog",
     "website",
     "heroku",
-    "jade"
+    "jade",
+    "mongoose",
+    "mongodb"
   ],
   "author": "Marcin Ufniarz",
   "license": "MIT",
