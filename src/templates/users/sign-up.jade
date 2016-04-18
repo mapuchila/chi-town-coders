@@ -1,7 +1,30 @@
 extends ../layout.jade
 
 block content
-        header
-          .header-content
-            .header-content-inner
-              h1 Sign-Up
+	header
+		.header-content
+			.header-content-inner
+				h2 Sign-Up
+				form
+					.form-group
+						label(for="txt-first-name")
+							| First Name
+						input#txt-first-name.form-control(type="text", name="txt-first-name", value="", placeholder="First Name")
+					.form-group
+						label(for="txt-last-name")
+							| Last Name
+						input#txt-last-name.form-control(type="text", name="txt-last-name", value="", placeholder="Last Name")
+					.form-group
+						label(for="txt-email")
+							| Email Address
+						input#txt-email.form-control(type="email", name="txt-email", value="", placeholder="Email Address")
+					.form-group
+						label(for="txt-password")
+							| Password
+						input#txt-password.form-control(type="text", name="txt-password", value="",  placeholder="Password")
+					.form-group
+						label(for="txt-password-confirm")
+							| Password Confirm
+						input#txt-password-confirm.form-control(type="text", name="txt-password-confirm", value="",  placeholder="Confirm Password")
+					button.btn.btn-default(type="submit")
+						| Submit

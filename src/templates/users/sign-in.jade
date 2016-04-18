@@ -1,7 +1,21 @@
 extends ../layout.jade
 
 block content
-        header
-          .header-content
-            .header-content-inner
-              h1 Sign-In
+	header
+		.header-content
+			.header-content-inner
+				h2 Sign-In
+				.form-group
+					label(for="txt-email")
+						| Email Address
+					input#txt-email.form-control(type="email", name="txt-email", value="", placeholder="Email Address")
+				.form-group
+					label(for="txt-password")
+						| Password
+					input#txt-password.form-control(type="text", name="txt-password", value="",  placeholder="Password")
+				.checkbox
+					input#chck-rememberme(type="checkbox", name="txt-password-confirm", value="")
+					label(for="chck-rememberme")
+						| Remember Me!
+				button.btn.btn-default(type="submit")
+					| Submit
