@@ -14,6 +14,8 @@ app.set('port', (process.env.PORT || 3000));
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/templates');
 
+require('./database');
+
 app.get('/', function(req, res){
 	var path = req.path;
 	res.locals.path = path;
