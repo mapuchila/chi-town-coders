@@ -1,59 +1,89 @@
 'use strict';
 
 var express = require('express'),
-	  posts = require('./mock/posts.json');
+	path = require('path'),
+	cookieParser = require('cookie-parser'),
+	bodyParser = require('body-parser'),
+	expressValidator = require('express-validator'),
+	flash = require('connect-flash'),
+	session = require('express-session'),
+	passport = require('passport'),
+	localStrategy = require('passport-local').Strategy,
+	mongo = require('mongodb'),
+	mongoose = require('mongoose');
+mongoose.connect((process.env.MONGOLAB_URI || 'mongodb://localhost:27017/sc3-coders'));
+var db = mongoose.connection;
 
-var postsLists = Object.keys(posts).map(function(value) {
-							         return posts[value]})
+// Set Route
+var routes = require('./routes/index');
+var users = require('./routes/users');
+var blog = require('./routes/blog');
 
+// Initialize App
 var app = express();
 
-app.use('/static', express.static(__dirname + '/public'))
-
-app.set('port', (process.env.PORT || 3000));
+// View Engine
+app.set('views', path.join(__dirname + '/templates'));
 app.set('view engine', 'jade');
-app.set('views', __dirname + '/templates');
 
-require('./database');
+// BodyParser Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
-app.get('/', function(req, res){
-	var path = req.path;
-	res.locals.path = path;
-	res.render('index');
+// Set Static Folder (content accessable to the browser)
+app.use('/static', express.static(__dirname + '/public'));
+
+// Express Session 
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// In this example, the formParam value is going to get morphed into form body format useful for printing.
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.'), 
+      	root = namespace.shift(), 
+      	formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
+
+// Connect Flash Middleware
+app.use(flash());
+
+// Global Vars
+app.use(function(req, res, next) {
+	res.locals.success_msg = req.flash('success_msg');
+	res.locals.error_msg = req.flash('error_msg');
+	res.locals.error = req.flash('error');
+	//res.locals.user = req.user || null;
+	next();
 });
 
-app.get('/blog/:title?', function(req, res){ 
-	var title = req.params.title;
-	if (title === undefined) {
-		res.status(503);
-		res.render('blog', {posts: postsLists})
-	} else {
-		var post = posts[title] || {};
-		res.render('post', { post: post});
-	}
-});
+// Setting Up Routes
+app.use('/', routes);
+app.use('/users', users);
+app.use('/blog', blog);
 
-app.get('/posts', function(req, res) {
-	if (req.query.raw) {
-		res.json(posts);
-	} else {
-		res.json(postsLists);
-	}
-});
-
-app.get('/sign-up', function(req, res){
-	var path = req.path;
-	res.locals.path = path;
-	//console.log(path);
-	res.render('users/sign-up');
-});
-
-app.get('/sign-in', function(req, res){
-	var path = req.path;
-	res.locals.path = path;
-	//console.log(path);
-	res.render('users/sign-in');
-});
+// Set Port
+app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function() {
 	console.log("The frontend server is running on port " + app.get('port') + "!");
