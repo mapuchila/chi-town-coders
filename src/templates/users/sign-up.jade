@@ -5,7 +5,15 @@ block content
 		.header-content
 			.header-content-inner
 				h2 Sign-Up
-				form
+				form(method='post', action='/users/sign-up')
+					if errors
+						.alert.alert-danger(role='alert')
+							for error in errors
+								//span.glyphicon.glyphicon-exclamation-sign(aria-hidden='true')
+								span.sr-only
+									| Error:
+								| #{error.msg}
+								br
 					.form-group
 						label(for="txt-first-name")
 							| First Name
