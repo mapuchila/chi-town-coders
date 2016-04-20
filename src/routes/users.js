@@ -1,6 +1,8 @@
+'use strict';
 var express = require('express');
 var router = express.Router();
-//var path = require('path');
+
+var User = require('../users/models/user');
 
 router.get('/sign-up', function(req, res){
 	var path = req.path;
@@ -18,7 +20,7 @@ router.post('/sign-up', function(req, res){
 	var email = req.body['txt-email'];
 	var password = req.body['txt-password'];
 	var confirmPassword = req.body['txt-password-confirm'];
-	console.log(Object.keys(req.body));
+	//console.log(Object.keys(req.body));
 
 	req.checkBody('txt-first-name', 'First Name is Required.').notEmpty();
 	req.checkBody('txt-last-name', 'Last Name is Required.').notEmpty();
@@ -30,12 +32,24 @@ router.post('/sign-up', function(req, res){
 	var errors = req.validationErrors();
 	//
 	if(errors) {
-		console.log(errors);
+		//console.log(errors);
 		res.render('users/sign-up', {
 			errors: errors
 		});
 	} else {
-		res.render('index');
+		var newUser = new User({
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			password: password
+		});
+		User.createUser(newUser, function(err, user) {
+			if(err) throw err;
+			console.log(user);
+		});
+		req.flash('success_msg', 'Congradulations on becoming a member of SC3!');
+
+		res.redirect('/users/sign-in');
 	}
 });
 

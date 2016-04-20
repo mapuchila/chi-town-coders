@@ -6,6 +6,17 @@ block content
 			.header-content-inner
 				h2 Sign-In
 				form
+					if success_msg
+						.alert.alert-success
+							| #{success_msg}
+
+					if errors
+						.alert.alert-danger
+							for error in errors
+								span.sr-only
+									| Error:
+								| #{error.msg}
+								br
 					.form-group
 						label(for="txt-email")
 							| Email Address
