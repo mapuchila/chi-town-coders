@@ -13,8 +13,6 @@ var express = require('express'),
 	mongoose = require('mongoose');
 mongoose.connect((process.env.MONGOLAB_URI || 'mongodb://localhost:27017/sc3-coders'));
 var db = mongoose.connection;
-// Storing sessions in a Redis (an in memory db)
-var RedisStore = require('connect-redis')(session);
 
 // Set Route
 var routes = require('./routes/index');
@@ -36,30 +34,14 @@ app.use(cookieParser());
 // Set Static Folder (content accessable to the browser)
 app.use('/static', express.static(__dirname + '/public'));
 
-var options = {};
-if(process.env.REDIS_URL) {
-  options = { url: process.env.REDIS_URL };
-} else {
-  options = { 
-    host: "127.0.0.1",
-    port: "6379",
-    socket: null
-  };
-}
 // Express Session 
+app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-    store: new RedisStore(options),
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
 }));
-
-app.use(function (req, res, next) {
-  if (!req.session) {
-    return next(new Error('oh no')); // handle error
-  }
-  next(); // otherwise continue
-});
 
 // Initialize Passport
 app.use(passport.initialize());

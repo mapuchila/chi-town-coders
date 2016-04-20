@@ -4,13 +4,16 @@ var mongoose = require('mongoose'),
 // User Schema
 var UserSchema = mongoose.Schema({
 	firstName: {
-		type: String
+		type: String,
+		default: ""
 	},
 	lastName: {
-		type: String
+		type: String,
+		default: ""
 	},
 	username: {
-		type: String
+		type: String,
+		default: "Anonymous"
 	},
 	password: {
 		type: String

@@ -31,7 +31,6 @@
     "bcryptjs": "*",
     "body-parser": "*",
     "connect-flash": "*",
-    "connect-redis": "^3.0.2",
     "cookie-parser": "*",
     "express": "^4.13.4",
     "express-messages": "*",
