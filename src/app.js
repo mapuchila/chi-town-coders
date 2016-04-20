@@ -35,12 +35,10 @@ app.use(cookieParser());
 app.use('/static', express.static(__dirname + '/public'));
 
 // Express Session 
-app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
 }));
 
 // Initialize Passport
