@@ -17,21 +17,23 @@ router.post('/sign-up', function(req, res){
 	var path = req.path;
 	res.locals.path = path;
 
-	var firstName = req.body['txt-first-name'];
-	var lastName = req.body['txt-last-name'];
-	var username = req.body['txt-username'];
-	var email = req.body['txt-email'];
-	var password = req.body['txt-password'];
-	var confirmPassword = req.body['txt-password-confirm'];
+	var firstName = req.body['first-name'];
+	var lastName = req.body['last-name'];
+	var username = req.body['username'];
+	var email = req.body['email'];
+	var password = req.body['password'];
+	var confirmPassword = req.body['password-confirm'];
 	//console.log(Object.keys(req.body));
 
-	req.checkBody('txt-first-name', 'First Name is Required.').notEmpty();
-	req.checkBody('txt-last-name', 'Last Name is Required.').notEmpty();
-	req.checkBody('txt-username', 'Hacker Name is Required.').notEmpty();
-	req.checkBody('txt-email', 'Email is Required.').notEmpty();
-	req.checkBody('txt-email', 'Email is not valid.').isEmail();
-	req.checkBody('txt-password', 'Password is Required.').notEmpty();
-	req.checkBody('txt-password-confirm', 'Passwords do not match!').equals(req.body['txt-password']);
+	req.checkBody('first-name', 'First Name is Required.').notEmpty();
+	req.checkBody('first-name', 'First Name cannot contain numbers.').isAlpha();
+	req.checkBody('last-name', 'Last Name is Required.').notEmpty();
+	req.checkBody('last-name', 'Last Name cannot contain numbers.').isAlpha();
+	req.checkBody('username', 'Hacker Name is Required.').notEmpty();
+	req.checkBody('email', 'Email is Required.').notEmpty();
+	req.checkBody('email', 'Email is not valid.').isEmail();
+	req.checkBody('password', 'Password is Required.').notEmpty();
+	req.checkBody('password-confirm', 'Passwords do not match!').equals(req.body['password']);
 
 	var errors = req.validationErrors();
 	//
@@ -61,12 +63,11 @@ router.post('/sign-up', function(req, res){
 router.get('/sign-in', function(req, res){
 	var path = req.path;
 	res.locals.path = path;
-	//console.log(path);
 	res.render('users/sign-in');
 });
 
-passport.use(new LocalStrategy( function(username, password, done) {
-		User.getUserByUsername(username, function(err, user){
+passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
+	User.getUserByEmail(email, function(err, user){
 	   	if(err) throw err;
 	   	if(!user){
 	   		return done(null, false, {message: 'Unknown User'});
@@ -84,23 +85,26 @@ passport.use(new LocalStrategy( function(username, password, done) {
 }));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  	done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-  User.getUserById(id, function(err, user) {
-    done(err, user);
-  });
+	User.getUserById(id, function(err, user) {
+	    done(err, user);
+	});
 });
 
 router.post('/sign-in',
-  passport.authenticate('local', {
-  	successRedirect: '/', 
-  	failureRedirect:'/users/sign-in', 
-  	failureFlash: true
-  }),
-  function(req, res) {
-  	res.redirect('/');
-  });
+  	passport.authenticate('local', {
+	  	successRedirect: '/', 
+	  	failureRedirect:'/users/sign-in', 
+	  	failureFlash: true
+  	}),
+  	function(req, res) {
+		var path = req.path;
+		res.locals.path = path;
+  		res.redirect('/');
+  	}
+);
 
 module.exports = router;

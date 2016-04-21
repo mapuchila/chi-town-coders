@@ -11,7 +11,9 @@ var express = require('express'),
 	localStrategy = require('passport-local').Strategy,
 	mongo = require('mongodb'),
 	mongoose = require('mongoose');
-mongoose.connect((process.env.MONGOLAB_URI || 'mongodb://localhost:27017/sc3-coders'));
+
+require('./database.js');
+
 var db = mongoose.connection;
 
 // Set Route
@@ -35,12 +37,10 @@ app.use(cookieParser());
 app.use('/static', express.static(__dirname + '/public'));
 
 // Express Session 
-app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
 }));
 
 // Initialize Passport

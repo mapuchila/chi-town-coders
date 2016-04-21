@@ -22,7 +22,8 @@ var UserSchema = mongoose.Schema({
 		type: String
 	},
 	email: {
-		type: String
+		type: String,
+		index: true
 	},
 	access: {
 		type: String,
@@ -45,6 +46,11 @@ module.exports.createUser = function(newUser, callback){
 	        newUser.save(callback);
 	    });
 	});
+};
+
+module.exports.getUserByEmail = function(email, callback){
+	var query = {email: email};
+	User.findOne(query, callback);
 };
 
 module.exports.getUserByUsername = function(username, callback){

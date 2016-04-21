@@ -1,1 +1,3 @@
 node_modules/
+src/users/other-models/
+src/mock/user.json
