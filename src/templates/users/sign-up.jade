@@ -9,15 +9,12 @@ block content
 					if errors
 						.alert.alert-danger(role='alert')
 							for error in errors
-								//span.glyphicon.glyphicon-exclamation-sign(aria-hidden='true')
-								span.sr-only
-									| Error:
 								| #{error.msg}
 								br
 					.form-group
 						label(for="first-name")
 							| First Name
-						input#first-name.form-control(type="text", name="first-name", value="", placeholder="First Name")
+						input#first-name.form-control(type="text", name="first-name", value="", placeholder="First Name", aria-describedby="basic-addon1")
 					.form-group
 						label(for="last-name")
 							| Last Name
@@ -33,10 +30,10 @@ block content
 					.form-group
 						label(for="password")
 							| Password
-						input#password.form-control(type="text", name="password", value="",  placeholder="Password")
+						input#password.form-control(type="password", name="password", value="",  placeholder="Password")
 					.form-group
 						label(for="password-confirm")
 							| Password Confirm
-						input#password-confirm.form-control(type="text", name="password-confirm", value="",  placeholder="Confirm Password")
+						input#password-confirm.form-control(type="password", name="password-confirm", value="",  placeholder="Confirm Password")
 					button.btn.btn-default(type="submit")
 						| Submit

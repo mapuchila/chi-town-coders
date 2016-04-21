@@ -13,6 +13,7 @@ var express = require('express'),
 	mongoose = require('mongoose');
 
 require('./database.js');
+require('./seed-user.js');
 
 var db = mongoose.connection;
 
