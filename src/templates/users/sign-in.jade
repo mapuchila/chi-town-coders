@@ -6,15 +6,15 @@ block content
 			.header-content-inner
 				h2 Sign-In
 				form(method='post', action='/users/sign-in')
-					if success_msg !== ''
+					if success_msg.length > 0
 						.alert.alert-success
 							| #{success_msg}
 
-					if error !== ''
+					if error.length > 0
 						.alert.alert-danger
 							| #{error}
 							br
-					if error_msg !== ''
+					if error_msg.length > 0
 						.alert.alert-danger
 							| #{error_msg}
 							br
@@ -32,6 +32,6 @@ block content
 							| Remember Me!
 					button.btn.btn-default(type="submit")
 						| Submit
-				p
-					a(href='/password-reset')
+				//p
+					a(href='/users/reset-password')
 						| Can't access your account?

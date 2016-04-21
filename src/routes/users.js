@@ -7,16 +7,10 @@ var router = express.Router();
 var User = require('../users/models/user');
 
 router.get('/sign-up', function(req, res){
-	var path = req.path;
-	res.locals.path = path;
-	//console.log(path);
 	res.render('users/sign-up');
 });
 
 router.post('/sign-up', function(req, res){
-	var path = req.path;
-	res.locals.path = path;
-
 	var firstName = req.body['first-name'];
 	var lastName = req.body['last-name'];
 	var username = req.body['username'];
@@ -61,8 +55,6 @@ router.post('/sign-up', function(req, res){
 });
 
 router.get('/sign-in', function(req, res){
-	var path = req.path;
-	res.locals.path = path;
 	res.render('users/sign-in');
 });
 
@@ -70,7 +62,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
 	User.getUserByEmail(email, function(err, user){
 	   	if(err) throw err;
 	   	if(!user){
-	   		return done(null, false, {message: 'Unknown User'});
+	   		return done(null, false, {message: 'Argh, that Email is swimming with the sharks!'});
 	   	}
 
 	   	User.comparePassword(password, user.password, function(err, isMatch){
@@ -78,7 +70,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, passw
 	   		if(isMatch){
 	   			return done(null, user);
 	   		} else {
-	   			return done(null, false, {message: 'Invalid password'});
+	   			return done(null, false, {message: 'Argh, that Password is no good!'});
 	   		}
 	   	});
    	});
@@ -101,10 +93,20 @@ router.post('/sign-in',
 	  	failureFlash: true
   	}),
   	function(req, res) {
-		var path = req.path;
-		res.locals.path = path;
   		res.redirect('/');
   	}
 );
+
+router.get('/logout', function(req, res) {
+	req.logout();
+	req.flash('success_msg', 'Thank you, come again!');
+
+	res.redirect('/users/sign-in');
+});
+
+router.get('/reset-password', function(req, res) {
+
+	res.render('users/reset-password', {success_msg: 'Under construction, please come again!'});
+});
 
 module.exports = router;

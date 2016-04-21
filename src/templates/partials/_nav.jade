@@ -16,22 +16,26 @@ nav#mainNav.navbar.navbar-default.navbar-fixed-top
 						#bs-example-navbar-collapse-1.collapse.navbar-collapse
 							ul.nav.navbar-nav.navbar-right
 								li
-										a(href='/blog') Blog
+									a(href='/blog') Blog
 								if path === '/'
 									li
-											a.page-scroll(href='#about') About
+										a.page-scroll(href='#about') About
 									li
-											a.page-scroll(href='#services') Services
+										a.page-scroll(href='#services') Services
 									|                     
 									li
-											a.page-scroll(href='#portfolio') Portfolio
+										a.page-scroll(href='#portfolio') Portfolio
 									|                     
 									li
-											a.page-scroll(href='#contact') Contact
-								if path === '/' ||  path === '/sign-in' ||  path === '/sign-up'
+										a.page-scroll(href='#contact') Contact
+								if path !== '/users/sign-up' && !user
 									li
-											a.page-scroll(href='/users/sign-up') Sign-Up
+										a.page-scroll(href='/users/sign-up') Sign-Up
+								if  path !== '/users/sign-in' && !user
 									li
-											a.page-scroll(href='/users/sign-in') Sign-In
+										a.page-scroll(href='/users/sign-in') Sign-In
+								if user
+									li
+										a.page-scroll(href='/users/logout') Logout
 									// /.navbar-collapse
 									// /.container-fluid
