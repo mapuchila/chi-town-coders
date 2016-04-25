@@ -36,6 +36,8 @@ nav#mainNav.navbar.navbar-default.navbar-fixed-top
 										a.page-scroll(href='/users/sign-in') Sign-In
 								if user
 									li
-										a.page-scroll(href='/users/logout') Logout
+										a(href='/users/account') #{user.username}
+									li
+										a(href='/users/logout') Logout
 									// /.navbar-collapse
 									// /.container-fluid

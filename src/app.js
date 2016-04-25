@@ -5,15 +5,17 @@ var express = require('express'),
 	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
 	expressValidator = require('express-validator'),
+  favicon = require('serve-favicon'),
 	flash = require('connect-flash'),
 	session = require('express-session'),
 	passport = require('passport'),
 	localStrategy = require('passport-local').Strategy,
+  logger = require('morgan'),
 	mongo = require('mongodb'),
 	mongoose = require('mongoose');
 
 require('./database.js');
-require('./seed-user.js');
+//require('./seed-user.js');
 
 var db = mongoose.connection;
 

@@ -109,4 +109,8 @@ router.get('/reset-password', function(req, res) {
 	res.render('users/reset-password', {success_msg: 'Under construction, please come again!'});
 });
 
+router.get('/account', function(req, res) {
+	res.render('users/account');
+});
+
 module.exports = router;
