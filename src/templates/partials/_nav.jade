@@ -17,6 +17,9 @@ nav#mainNav.navbar.navbar-default.navbar-fixed-top
 							ul.nav.navbar-nav.navbar-right
 								li
 									a(href='/blog') Blog
+								if path === '/blog' && user
+									li
+										a(href='/blog/create-post') Create Post
 								if path === '/'
 									li
 										a.page-scroll(href='#about') About
