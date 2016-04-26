@@ -56,14 +56,20 @@ router.post('/create-post', function(req, res){
 
 
 
-router.get('/:title?', function(req, res){ 
-	var title = req.params.title;
-	if (title === undefined) {
-		//res.status(503);
-		res.render('blogs/blog', {posts: postsLists})
+router.get('/:id?', function(req, res){ 
+	var id = req.params.id;
+
+	if (id === undefined) {
+		Post.getAllPosts(function(postArray) {
+			res.render('blogs/blog', {posts: postArray});
+		});
+
 	} else {
-		var post = posts[title] || {};
-		res.render('post', { post: post});
+		Post.getPostById(id, function(post) {
+			//console.log(post);
+			res.render('blogs/post', { post: post});
+		});
+		//var post = posts[id] || {};
 	}
 });
 

@@ -17,8 +17,6 @@ var express = require('express'),
 require('./database.js');
 //require('./seed-user.js');
 
-var db = mongoose.connection;
-
 // Set Route
 var routes = require('./routes/index');
 var users = require('./routes/users');

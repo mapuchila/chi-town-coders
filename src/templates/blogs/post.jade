@@ -1,4 +1,4 @@
-extends ./layout.jade
+extends ../layout.jade
 block content
     section.post
       .container
@@ -9,6 +9,6 @@ block content
             hr.light
             
             p.text-faded
-              | #{post.description}
+              | #{post.title}
             .article
-              | #{post.description}
+              | #{post.body}
