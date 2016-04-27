@@ -63,13 +63,11 @@ router.get('/:id?', function(req, res){
 		Post.getAllPosts(function(postArray) {
 			res.render('blogs/blog', {posts: postArray});
 		});
-
 	} else {
 		Post.getPostById(id, function(post) {
-			//console.log(post);
+			//res.json(post);
 			res.render('blogs/post', { post: post});
 		});
-		//var post = posts[id] || {};
 	}
 });
 

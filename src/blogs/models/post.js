@@ -32,16 +32,16 @@ module.exports.createPost = function(newPost, callback){
 };
 
 module.exports.getPostById = function(id, callback){
-	var stringId = id.toString();
-	console.log(stringId);
-	console.log(typeof stringId);
-	db.collection('posts').find({_id: stringId},{title:1, body:1}, function(err, result){
+	var id = require('mongodb').ObjectID(id);
+	db.collection('posts').findOne({ _id: id }, {title:1, body:1}, function(err, result){
+		if (err) throw err;
 		//console.log(result);
 	  	callback(result);
-	})
+	});
 };
 module.exports.getPostByTitle = function(title, callback){
 	db.collection('posts').find({title: title},{title:1, body:1}, function(err, result){
+		if (err) throw err;
 		//console.log(result);
 	  	callback(result);
 	});
