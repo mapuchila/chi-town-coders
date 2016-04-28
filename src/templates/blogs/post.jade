@@ -2,6 +2,18 @@ extends ../layout.jade
 block content
     section.post
       .container
+          if success_msg.length > 0
+            .alert.alert-success
+              | #{success_msg}
+
+          if error.length > 0
+            .alert.alert-danger
+              | #{error}
+              br
+          if error_msg.length > 0
+            .alert.alert-danger
+              | #{error_msg}
+              br
         .row
           .col-lg-8.col-lg-offset-2.text-center
             h2.section-heading #{post.title}
@@ -12,3 +24,35 @@ block content
               | #{post.title}
             .article
               | #{post.body}
+    if post.comments
+      section.post
+        .container
+          .row
+            .col-lg-8.col-lg-offset-2.text-center
+              h2.section-heading 
+                | Comments
+                hr.light
+              each comment in post.comments
+                | #{comment.comment}
+                br
+                | - #{comment.username}
+                br
+                br
+    section.post
+      .container
+        .row
+          if errors
+            .alert.alert-danger(role='alert')
+              for error in errors
+                | #{error.msg}
+                br
+          .col-lg-8.col-lg-offset-2.text-center
+            if user
+              h2.section-heading 
+                | Add Comment
+                hr.light
+                form(method='post', action='/blog/add-comment/#{post._id}')
+                  textarea#comment.form-control(type="text", name="comment", value="", placeholder="Your comment here!", style='max-width:100%;')
+              
+                  button.btn.btn-default(type="submit")
+                    | Submit

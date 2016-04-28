@@ -15,7 +15,8 @@ var express = require('express'),
 	mongoose = require('mongoose');
 
 require('./database.js');
-//require('./seed-user.js');
+//require('./mock/seed/seed-post.js');
+//require('./mock/seed/seed-comment.js');
 
 // Set Route
 var routes = require('./routes/index');

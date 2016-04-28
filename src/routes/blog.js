@@ -2,14 +2,7 @@ var express = require('express');
 var router = express.Router();
 var posts = require('../mock/posts.json');
 var Post = require('../blogs/models/post');
-
-var postsLists = Object.keys(posts).map(function(value) {
-							         return posts[value];
-							     	});
-
-
-
-
+var Comment = require('../blogs/models/comment');
 
 router.get('/create-post', function(req, res) {
     res.render('blogs/create-post', { locals: {
@@ -41,7 +34,7 @@ router.post('/create-post', function(req, res){
 		var newPost = new Post({
 			title: title,
 			body: post,
-			id: req.user._id
+			writerId: req.user._id
 		});
 
 		Post.createPost(newPost, function(err, user) {
@@ -52,9 +45,12 @@ router.post('/create-post', function(req, res){
     }
 });
 
-
-
-
+router.get('/posts', function(req, res) {
+	// Displays posts JSON
+	Post.getAllPosts(function(postArray) {
+		res.json(postArray);
+	});
+});
 
 router.get('/:id?', function(req, res){ 
 	var id = req.params.id;
@@ -71,42 +67,36 @@ router.get('/:id?', function(req, res){
 	}
 });
 
-router.get('/posts', function(req, res) {
+router.post('/add-comment/:id?', function(req, res) {
+	var id = req.params.id;
 
-	if (req.query.raw) {
-		res.json(posts);
+	var comment = req.body['comment'];
+
+	req.checkBody('comment', 'Comment is required.').notEmpty();
+
+	var errors = req.validationErrors();
+	if(errors) {
+		res.locals.comment = comment;
+		Post.getPostById(id, function(post) {
+			res.render('blogs/post', { post: post, errors: errors});
+		});
 	} else {
-		res.json(postsLists);
+		//console.log(req.user.username);
+		var newBlogComment = {
+			comment: comment,
+			username: req.user.username
+		};
+		// Having issues saving this add comment feature. :/
+		Post.addComment(id, newBlogComment, function(err, comment) {
+			//if(err) throw err;
+			console.log(err);
+			console.log(comment);
+			Post.getPostById(id, function(post) {
+				res.render('blogs/post', { post: post, errors: errors});
+			});
+		});
+
 	}
 });
-
-
-
-
-/*router.get('/blog/:id', function(req, res) {
-    articleProvider.findById(req.params.id, function(error, article) {
-        res.render('blog_show.jade',
-        { locals: {
-            title: article.title,
-            article:article
-        }
-        });
-    });
-});
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;
