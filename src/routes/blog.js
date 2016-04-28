@@ -84,7 +84,9 @@ router.post('/add-comment/:id?', function(req, res) {
 		//console.log(req.user.username);
 		var newBlogComment = {
 			comment: comment,
-			username: req.user.username
+			username: req.user.username,
+			userId: req.user._id,
+			createdDate: Date.now
 		};
 		// Having issues saving this add comment feature. :/
 		Post.addComment(id, newBlogComment, function(err, comment) {
