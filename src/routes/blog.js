@@ -20,7 +20,7 @@ router.post('/create-post', function(req, res){
 	req.checkBody('post', 'Post Content is Required.').notEmpty();
 
 	var errors = req.validationErrors();
-	//
+	
 	if(errors) {
 
 		res.locals.title = title;
@@ -30,18 +30,21 @@ router.post('/create-post', function(req, res){
 		});
 
 	} else {
-		console.log(post);
 		var newPost = new Post({
 			title: title,
 			body: post,
 			writerId: req.user._id
 		});
 
-		Post.createPost(newPost, function(err, user) {
-			if(err) throw err;
-			console.log(post);
+		Post.createPost(newPost, function(error, result) {
+			if(error) {
+        		res.redirect('/blog', {errors: error});
+				//console.log(error);
+			} else {
+				//console.log(result);
+        		res.redirect('/blog');
+			}
 		});
-        res.redirect('/blog');
     }
 });
 
@@ -73,11 +76,10 @@ router.get('/delete-post/:id?', function(req, res) {
 	Post.deletePostById(postId, function(err, result) {
 		if(err) {
 			console.log(err);
-
 			// Need to update this to display error if it occurs.
         	res.redirect('/blog/' + id);
 		} else {
-			console.log(result);
+			//console.log(result);
         	res.redirect('/blog');
 		}
 	});
@@ -85,7 +87,6 @@ router.get('/delete-post/:id?', function(req, res) {
 
 router.post('/add-comment/:id?', function(req, res) {
 	var id = req.params.id;
-
 	var comment = req.body['comment'];
 
 	req.checkBody('comment', 'Comment is required.').notEmpty();
@@ -106,16 +107,13 @@ router.post('/add-comment/:id?', function(req, res) {
 		};
 		// Having issues saving this add comment feature. :/
 		Post.addComment(id, newBlogComment, function(err, result) {
-			//if(err) throw err;
 			if(err) {
 				console.log(err);
 				Post.getPostById(id, function(post) {
-					res.render('blogs/post', { post: post, errors: errors});
+					res.render('blogs/post', { post: post });
 				});
-			} else {
-				console.log(result);
-        		res.redirect('/blog/'+id);
 			}
+        	res.redirect('/blog/'+id);
 		});
 	}
 });
@@ -126,13 +124,9 @@ router.get('/delete-comment/:id?', function(req, res) {
 	Post.deleteCommentById(commentId, function(err, result) {
 		if(err) {
 			console.log(err);
-
 			// Need to update this to display error if it occurs.
-        	res.redirect('/blog');
-		} else {
-			console.log(result);
-        	res.redirect('/blog');
 		}
+        res.redirect('/blog');
 	});
 });
 
