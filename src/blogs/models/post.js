@@ -33,7 +33,13 @@ var Post = module.exports = mongoose.model('Post', PostSchema);
 
 module.exports.createPost = function(newPost, callback){
 	// Saves new post to database.
-	newPost.save(callback);
+	newPost.save(function(err, result) {
+		if(err) {
+			callback(error, null);
+		} else {
+			callback(null, result);
+		}
+	});
 };
 
 module.exports.getPostById = function(postID, callback){
@@ -95,9 +101,8 @@ module.exports.addComment = function(postID, newComment, callback){
 
 module.exports.deleteCommentById = function(commentId, callback) {
 	var id = require('mongodb').ObjectID(commentId);
-	console.log(id);
 	// Delete comment functionality.
-	db.collection('posts').update({_id: id}, { $pull: { comments: { _id: id } } }, function(err, result) {
+	db.collection('posts').update({}, { $pull: { comments: { _id: id } } }, function(err, result) {
 		if(err) {
 			callback(err, null);
 		} else {
