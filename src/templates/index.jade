@@ -4,6 +4,22 @@ block content
         header
           .header-content
             .header-content-inner
+              if success_msg.length > 0
+                .alert.alert-success
+                  | #{success_msg}
+
+              if error.length > 0
+                .alert.alert-danger
+                  | #{error}
+                  br
+              if error_msg.length > 0
+                .alert.alert-danger
+                  | #{error_msg}
+                  br
+              if members.length > 0
+                .alert.alert-danger
+                  | #{members}
+                  br
               h1 Coding, Teaching and Learning Space
               |                 
               hr
@@ -84,7 +100,7 @@ block content
               |                 
               a.btn.btn-default.btn-xl.wow.tada(href='http://www.meetup.com/Supreme-Chi-Town-Coding-Crew/' target='_new') Join us this weekend!
         | 
-        <!--
+        
         section#portfolio.no-padding
           .container-fluid
             .row.no-gutter
@@ -159,7 +175,7 @@ block content
                       |                                 
                       .project-name
                         | Fit Fittington
-        |         -->
+        |         
         section#contact
           .container
             .row

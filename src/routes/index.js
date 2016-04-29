@@ -1,9 +1,17 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../users/models/user');
 
 // Home page
-router.get('/', function(req, res){
-	res.render('index');
+router.get('/', function(req, res) {
+	// Pull users, first and last name, username, role and primary coding language.
+	User.getUserSliderInfo(function(error, members) {
+		if(error) {
+			res.render('index', {error: error});
+		} else {
+			res.render('index', {members: JSON.stringify(members)});
+		}
+	});
 });
 
 // Can be used to ensure authentication.

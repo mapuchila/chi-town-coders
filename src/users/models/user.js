@@ -30,6 +30,18 @@ var UserSchema = mongoose.Schema({
 		type: Date, 
 		default: Date.now,
 		index: true
+	},
+	role: {
+		type: String,
+		default: ""
+	},
+	primCode: {
+		type: String,
+		default: ""
+	},
+	image: {
+		type: String,
+		default: ""
 	}
 });
 
@@ -63,4 +75,18 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     	if(err) throw err;
     	callback(null, isMatch);
 	});
+};
+
+module.exports.getUserSliderInfo = function(callback){
+	var criteria = {
+		firstName:1, 
+		lastName:1, 
+		username:1, 
+		role:1, 
+		image:1,
+		primCode:1,
+		createdDate:1
+	};
+
+	User.find({}, criteria, callback).sort( { createdDate: -1 } );
 };
