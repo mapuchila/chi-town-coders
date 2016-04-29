@@ -24,6 +24,16 @@ block content
               | #{post.title}
             .article
               | #{post.body}
+
+            if user
+              if user._id.toString() === post.writerId.toString()
+
+                hr.light
+                
+                p.text-faded
+                  a(href="/blog/delete-post/" + post._id)
+                    button.btn.btn-default
+                      | Delete Post
     if post.comments
       section.post
         .container
@@ -33,7 +43,12 @@ block content
                 | Comments
                 hr.light
               each comment in post.comments
-                | #{comment.comment}
+                | #{comment.comment} 
+                if user
+                  if user._id.toString() === comment.userId.toString()
+                    a(href="/blog/delete-comment/" + comment._id)
+                      button.btn.btn-default
+                        | Delete Comment
                 br
                 | - #{comment.username}
                 br

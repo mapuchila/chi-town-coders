@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var Comment = require('./comment');
-
+var Schema = mongoose.Schema;
 var db = mongoose.connection;
 
 // Blog Schema
@@ -15,7 +15,7 @@ var PostSchema = mongoose.Schema({
 		default: ""
 	},
 	writerId: {
-		type: String
+		type: Schema.Types.ObjectId
 	},
 	createdDate: { 
 		type: Date, 
@@ -61,9 +61,16 @@ module.exports.getAllPosts = function(callback) {
 	});
 };
 
-module.exports.deletePostById = function(id, callback) {
-	var id = require('mongodb').ObjectID(id);
+module.exports.deletePostById = function(postId, callback) {
+	var id = require('mongodb').ObjectID(postId);
 	// Delete post functionality.
+	db.collection('posts').remove({_id: id}, function(err, result) {
+		if(err) {
+			callback(err, null);
+		} else {
+			callback(null, result);
+		}
+	});
 };
 
 ///////////////////////////
@@ -79,14 +86,22 @@ module.exports.addComment = function(postID, newComment, callback){
 
 	db.collection("posts").update({ _id: id }, { "$push": { comments: newComment }}, function(err, result) {
 		if( err ) {
-			callback(err);
+			callback(err, null);
 		} else {
 			callback(null, result);
 		}
 	});
 };
 
-module.exports.deleteCommentById = function(id, callback) {
-	var id = require('mongodb').ObjectID(id);
+module.exports.deleteCommentById = function(commentId, callback) {
+	var id = require('mongodb').ObjectID(commentId);
+	console.log(id);
 	// Delete comment functionality.
+	db.collection('posts').update({_id: id}, { $pull: { comments: { _id: id } } }, function(err, result) {
+		if(err) {
+			callback(err, null);
+		} else {
+			callback(null, result);
+		}
+	});
 };

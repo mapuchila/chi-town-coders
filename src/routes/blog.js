@@ -67,6 +67,22 @@ router.get('/:id?', function(req, res){
 	}
 });
 
+router.get('/delete-post/:id?', function(req, res) {
+	var postId = req.params.id;
+
+	Post.deletePostById(postId, function(err, result) {
+		if(err) {
+			console.log(err);
+
+			// Need to update this to display error if it occurs.
+        	res.redirect('/blog/' + id);
+		} else {
+			console.log(result);
+        	res.redirect('/blog');
+		}
+	});
+});
+
 router.post('/add-comment/:id?', function(req, res) {
 	var id = req.params.id;
 
@@ -89,16 +105,35 @@ router.post('/add-comment/:id?', function(req, res) {
 			createdDate: Date.now
 		};
 		// Having issues saving this add comment feature. :/
-		Post.addComment(id, newBlogComment, function(err, comment) {
+		Post.addComment(id, newBlogComment, function(err, result) {
 			//if(err) throw err;
-			console.log(err);
-			console.log(comment);
-			Post.getPostById(id, function(post) {
-				res.render('blogs/post', { post: post, errors: errors});
-			});
+			if(err) {
+				console.log(err);
+				Post.getPostById(id, function(post) {
+					res.render('blogs/post', { post: post, errors: errors});
+				});
+			} else {
+				console.log(result);
+        		res.redirect('/blog/'+id);
+			}
 		});
-
 	}
+});
+
+router.get('/delete-comment/:id?', function(req, res) {
+	var commentId = req.params.id;
+
+	Post.deleteCommentById(commentId, function(err, result) {
+		if(err) {
+			console.log(err);
+
+			// Need to update this to display error if it occurs.
+        	res.redirect('/blog');
+		} else {
+			console.log(result);
+        	res.redirect('/blog');
+		}
+	});
 });
 
 module.exports = router;
