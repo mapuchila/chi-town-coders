@@ -23,7 +23,8 @@ block content
               p
                 | Supreme Chi-Town Coding Crew organizes within <a href="http://freegeekchicago.org/" target='_new'>FreeGeekChicago</a>.  Provides programmers and hackers a space each Saturday to hack, interact with Senior and Junior developers, build relationships and coordinate on projects.
               |                 
-              a.btn.btn-primary.btn-xl.page-scroll(href='http://www.meetup.com/Supreme-Chi-Town-Coding-Crew/' target='_new') Sign up now!
+              if !user
+                a.btn.btn-primary.btn-xl.page-scroll(href='/users/sign-up') Sign up now!
         |     
         section#about.bg-primary
           .container
