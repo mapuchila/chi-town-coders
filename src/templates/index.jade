@@ -16,10 +16,6 @@ block content
                 .alert.alert-danger
                   | #{error_msg}
                   br
-              if members.length > 0
-                .alert.alert-danger
-                  | #{members}
-                  br
               h1 Coding, Teaching and Learning Space
               |                 
               hr
@@ -103,7 +99,8 @@ block content
         
         section#portfolio.no-padding
           .container-fluid
-            .row.no-gutter
+            .row.no-gutter#member-slider
+              <!--
               .col-lg-4.col-sm-6
                 a.portfolio-box(href='#')
                   img.img-responsive(src='/static/img/portfolio/1.jpg', alt='')
@@ -174,7 +171,7 @@ block content
                         | CrossFitter
                       |                                 
                       .project-name
-                        | Fit Fittington
+                        | Fit Fittington -->
         |         
         section#contact
           .container
