@@ -99,10 +99,11 @@ module.exports.addComment = function(postID, newComment, callback){
 	});
 };
 
-module.exports.deleteCommentById = function(commentId, callback) {
-	var id = require('mongodb').ObjectID(commentId);
+module.exports.deleteCommentById = function(commentId, postId, callback) {
+	var cId = require('mongodb').ObjectID(commentId);
+	var pId = require('mongodb').ObjectID(postId);
 	// Delete comment functionality.
-	db.collection('posts').update({}, { $pull: { comments: { _id: id } } }, function(err, result) {
+	db.collection('posts').update({_id: pId}, { $pull: { comments: { _id: cId } } }, function(err, result) {
 		if(err) {
 			callback(err, null);
 		} else {

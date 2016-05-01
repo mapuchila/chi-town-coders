@@ -46,7 +46,7 @@ block content
                 | #{comment.comment} 
                 if user
                   if user._id.toString() === comment.userId.toString()
-                    a(href="/blog/delete-comment/" + comment._id)
+                    a(href="/blog/delete-comment/" + comment._id + "/" + post._id)
                       button.btn.btn-default
                         | Delete Comment
                 br

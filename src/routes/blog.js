@@ -118,10 +118,11 @@ router.post('/add-comment/:id?', function(req, res) {
 	}
 });
 
-router.get('/delete-comment/:id?', function(req, res) {
-	var commentId = req.params.id;
+router.get('/delete-comment/:commentID?/:postID?', function(req, res) {
+	var commentId = req.params.commentID;
+	var postId = req.params.postID;
 
-	Post.deleteCommentById(commentId, function(err, result) {
+	Post.deleteCommentById(commentId, postId, function(err, result) {
 		if(err) {
 			console.log(err);
 			// Need to update this to display error if it occurs.
