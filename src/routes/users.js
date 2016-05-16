@@ -5,15 +5,16 @@ var express = require('express'),
 	LocalStrategy = require('passport-local').Strategy;
 var router = express.Router();
 var forgot = require('password-reset')({
-    uri : 'http://localhost:3000/reset-password',
+    uri : 'http://chi-town-coders.herokuapp.com/users/reset-password',
     from : 'auto@supreme-chi-town-coding-crew',
-    host : 'localhost', 
+    host : 'chi-town-coders.herokuapp.com', 
     port : 25
 });
-// Password-Reset Middleware
-//app.use(forgot.middleware);
+//router.use(require('sesame')()); // for sessions
 
 var User = require('../users/models/user');
+
+router.use(forgot.middleware);
 
 router.get('/sign-up', function(req, res){
 	res.render('users/sign-up');
@@ -128,18 +129,18 @@ router.post('/forgot', function (req, res) {
     var email = req.body.email;
     var reset = forgot(email, function (err) {
         if (err) {
-        	//res.end('Error sending message: ' + err);
-			res.render('users/forgot', {error_msg: 'Error sending message: ' + err});
+        	res.end('Error sending message: ' + err);
+			//res.render('users/forgot', {error_msg: 'Error sending message: ' + err});
         } else {
-        	//res.end('Check your inbox for a password reset message.');
-			res.render('users/reset-password', {success_msg: 'Check your inbox for a password reset message.'});
+        	res.end('Check your inbox for a password reset message.');
+			//res.render('users/reset-password', {success_msg: 'Check your inbox for a password reset message.'});
         }
     });
 
     reset.on('request', function (req_, res_) {
         req_.session.reset = { email : email, id : reset.id };
-        //fs.createReadStream(__dirname + '/users/forgot').pipe(res_);
-		res.render('users/reset-password', {success_msg: 'Under construction, please come again!'});
+        fs.createReadStream(__dirname + '/users/forgot').pipe(res_);
+		//res.render('users/reset-password', {success_msg: 'Under construction, please come again!'});
     });
 });
 
