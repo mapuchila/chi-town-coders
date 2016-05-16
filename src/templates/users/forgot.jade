@@ -1,0 +1,26 @@
+extends ../layout.jade
+
+block content
+	header
+		.header-content
+			.header-content-inner
+				h2 Reset Password
+				form(method='post', action='/users/forgot')
+					if success_msg.length > 0
+						.alert.alert-success
+							| #{success_msg}
+
+					if error.length > 0
+						.alert.alert-danger
+							| #{error}
+							br
+					if error_msg.length > 0
+						.alert.alert-danger
+							| #{error_msg}
+							br
+					.form-group
+						label(for="email")
+							| Email Address
+						input#email.form-control(type="text", name="email", value="", placeholder="Email Address")
+					button.btn.btn-default(type="submit")
+						| Submit

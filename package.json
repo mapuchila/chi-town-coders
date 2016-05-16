@@ -36,13 +36,14 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
-    "serve-favicon": "*",
     "jade": "^1.11.0",
     "mongodb": "*",
     "mongoose": "^4.4.12",
     "morgan": "*",
     "passport": "*",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "password-reset": "^0.1.4",
+    "serve-favicon": "*"
   }
 }
