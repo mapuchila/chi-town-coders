@@ -5,23 +5,24 @@ block content
 	section.post
 		.container
 			.row
-				.col-lg-8.col-lg-offset-2.text-center
+				.text-center
 					h2
 						Create New Blog
 					form(method='post', action='/blog/create-post')
 						if errors
-							.alert.alert-danger(role='alert')
-								for error in errors
-									| #{error.msg}
-									br
-						.form-group
-							label(for="title")
-								| Title
-							input#title.form-control(type="text", name="title", value="", placeholder="Post Title")
-						.form-group
-							label(for="post")
-								| Post
-							textarea#post.form-control(type="text", name="post", value="", placeholder="Post Content", style='max-width:100%;')
-						
-						button.btn.btn-default(type="submit")
-							| Submit
+							.col-lg-8.col-lg-offset-2
+								.alert.alert-danger(role='alert')
+									for error in errors
+										| #{error.msg}
+										br
+						.col-lg-12
+							.form-group
+								label(for="title")
+									| Title
+								input#title.form-control(type="text", name="title", value="#{title}", placeholder="Post Title")
+							.form-group
+								label(for="post")
+									| Post
+								textarea#post.form-control(type="text", name="post", placeholder="Post Content", style='max-width:100%;') #{post}
+							button.btn.btn-default(type="submit")
+								| Submit
